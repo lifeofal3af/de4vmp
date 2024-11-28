@@ -1,0 +1,37 @@
+name: Build and Store Artifacts
+
+on:
+  push:
+    branches:
+      - main  # Or any branch you want to trigger this action for
+  pull_request:
+    branches:
+      - main  # Or any branch you want to trigger this action for
+
+jobs:
+  build:
+    runs-on: windows-latest  # Use a Windows runner
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '6.x'  # Use the version of .NET that your project is using
+
+      - name: Restore dependencies
+        run: dotnet restore de4vmp.sln
+
+      - name: Build the solution
+        run: dotnet build de4vmp.sln --configuration Release
+
+      - name: Publish the solution
+        run: dotnet publish de4vmp.sln --configuration Release --output ./published
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: ./published
