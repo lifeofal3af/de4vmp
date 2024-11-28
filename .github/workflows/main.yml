@@ -1,12 +1,7 @@
 name: Build and Store Artifacts
 
 on:
-  push:
-    branches:
-      - main  # Or any branch you want to trigger this action for
-  pull_request:
-    branches:
-      - main  # Or any branch you want to trigger this action for
+  workflow_dispatch:  # This allows manual triggering of the workflow
 
 jobs:
   build:
